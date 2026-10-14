@@ -1,0 +1,12 @@
+begin;
+create table public.carmitra_profiles(user_id uuid primary key references auth.users(id) on delete cascade,full_name text not null default '',phone text not null default '' check(phone='' or phone~'^[6-9][0-9]{9}$'),created_at timestamptz not null default now());
+alter table public.carmitra_profiles enable row level security;
+grant select,insert,update on public.carmitra_profiles to authenticated;
+grant all on public.carmitra_profiles to service_role;
+create policy profile_read on public.carmitra_profiles for select to authenticated using(user_id=(select auth.uid()) or (select carmitra_internal.is_admin()));
+create policy profile_create on public.carmitra_profiles for insert to authenticated with check(user_id=(select auth.uid()));
+create policy profile_update on public.carmitra_profiles for update to authenticated using(user_id=(select auth.uid())) with check(user_id=(select auth.uid()));
+create function carmitra_internal.create_profile() returns trigger language plpgsql security definer set search_path='' as $$begin insert into public.carmitra_profiles(user_id,full_name) values(new.id,coalesce(new.raw_user_meta_data->>'full_name','')) on conflict(user_id) do nothing;return new;end$$;
+revoke all on function carmitra_internal.create_profile() from public,anon,authenticated;
+create trigger carmitra_profile_created after insert on auth.users for each row execute function carmitra_internal.create_profile();
+commit;

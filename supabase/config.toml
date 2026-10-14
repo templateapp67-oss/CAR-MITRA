@@ -1,0 +1,3 @@
+[functions.carmitra-payments]
+# Handler validates customer JWTs through Auth and signed webhook payloads itself.
+verify_jwt = false

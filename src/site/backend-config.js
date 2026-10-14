@@ -1,0 +1,1 @@
+window.CARMITRA_BACKEND={"url":"https://gsahfgwhhpjwtpmhozkm.supabase.co","publishableKey":"sb_publishable_sZPRmT_dPTnVuswovF3m4A_cNT0jMlJ","bookingDemoEnabled":false,"demoOtpEnabled":true,"phoneOtpEnabled":false,"razorpayTestEnabled":false};

@@ -1,0 +1,9 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';
+const source=fs.readFileSync('scripts/test-front.mjs','utf8').split('\nfor(const signedIn')[0].replace(/^import[^\n]+\n/,'');const h=Function('fs','vm',source+';return harness;')(fs,vm)(false);await new Promise(setImmediate);
+// The screenshot's Deep Cleaning + waterless combination must retain its cards.
+vm.runInContext("applyServiceCatalogue([{id:14,name:'Underbody Wash',category:3,price_paise:39900,duration_minutes:30}]);filter=3;eco=true;query='';render('services',false)",h.ctx);assert(h.nodes['#service-list'].innerHTML.includes('Underbody Wash'));assert(!h.nodes['#service-list'].innerHTML.includes('No matching services'));
+vm.runInContext('applyServiceCatalogue([])',h.ctx);
+for(let category=0;category<5;category++){vm.runInContext(`filter=${category};eco=true;query='';render('services',false)`,h.ctx);const html=h.nodes['#service-list'].innerHTML;assert(html.includes('data-demo-service'));assert(html.includes('indicative price'));assert(!html.includes('data-book='));}
+vm.runInContext("query='no such service';updateList()",h.ctx);assert(h.nodes['#service-list'].innerHTML.includes('No exact matches'));assert(h.nodes['#service-list'].innerHTML.includes('data-demo-service'));
+vm.runInContext("applyServiceCatalogue([{id:200,name:'Interior Deep Clean',category:3,price_paise:49900,duration_minutes:120}]);filter=3;query='';updateList()",h.ctx);assert(h.nodes['#service-list'].innerHTML.includes('data-book='));assert(!h.nodes['#service-list'].innerHTML.includes('data-demo-service'));assert.equal(h.ctx.window.CARMITRA.serviceIds[0],200);
+console.log('PASS: Deep Cleaning/waterless regression, demo cards in all five empty categories, honest search suggestions and live catalogue recovery.');

@@ -1,0 +1,20 @@
+{
+  "name": "carmitra-jaipur",
+  "version": "1.0.0",
+  "description": "Jaipur-only doorstep vehicle-care marketplace, a Nexora company. Supabase project: CAR-MITRA (`gsahfgwhhpjwtpmhozkm`). Site: https://carmitra-jaipur.templateapp67.chatgpt.site.",
+  "main": "index.js",
+  "scripts": {
+    "build": "node scripts/build-performance.mjs && node scripts/build-worker.mjs",
+    "test": "node scripts/test-front.mjs && node scripts/test-videos.mjs && node scripts/test-performance.mjs && node scripts/test-booking.mjs && node scripts/test-reviews.mjs && node scripts/test-address-map.mjs && node scripts/test-profile-dob.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "esbuild": "0.25.12"
+  },
+  "dependencies": {
+    "leaflet": "1.9.4"
+  }
+}

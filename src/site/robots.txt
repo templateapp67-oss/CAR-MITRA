@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://carmitra-jaipur.templateapp67.chatgpt.site/sitemap.xml
